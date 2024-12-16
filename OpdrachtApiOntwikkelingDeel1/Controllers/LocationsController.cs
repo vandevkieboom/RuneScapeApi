@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OpdrachtApiOntwikkelingDeel1.Models;
-using OpdrachtApiOntwikkelingDeel1.Services;
+using OpdrachtApiOntwikkeling.Models;
+using OpdrachtApiOntwikkeling.Services;
 
-namespace OpdrachtApiOntwikkelingDeel1.Controllers
+namespace OpdrachtApiOntwikkeling.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

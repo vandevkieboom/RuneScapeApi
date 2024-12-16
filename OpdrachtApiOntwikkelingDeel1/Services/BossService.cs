@@ -1,6 +1,6 @@
-﻿using OpdrachtApiOntwikkelingDeel1.Models;
+﻿using OpdrachtApiOntwikkeling.Models;
 
-namespace OpdrachtApiOntwikkelingDeel1.Services
+namespace OpdrachtApiOntwikkeling.Services
 {
     public class BossService : IBossService
     {

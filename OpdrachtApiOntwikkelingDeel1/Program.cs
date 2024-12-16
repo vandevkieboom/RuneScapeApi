@@ -1,4 +1,6 @@
-using OpdrachtApiOntwikkelingDeel1.Services;
+using Microsoft.EntityFrameworkCore;
+using OpdrachtApiOntwikkeling.Data;
+using OpdrachtApiOntwikkeling.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,15 +11,29 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IBossService, BossService>();
-builder.Services.AddSingleton<ILocationService, LocationService>();
-builder.Services.AddSingleton<IUniqueItemService, UniqueItemService>();
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true); //Lowercase routing
+var InMemoryDatabase = builder.Configuration.GetValue<bool>("InMemoryDatabase");
+if (InMemoryDatabase)
+{
+    builder.Services.AddDbContext<InMemoryDbContext>(options =>
+        options.UseInMemoryDatabase("InMemoryDb"));
+    //builder.Services.AddScoped<IBossService, BossService>();
+    //builder.Services.AddScoped<ILocationService, LocationService>();
+    //builder.Services.AddScoped<IUniqueItemService, UniqueItemService>();
+}
+else
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    });
+    //builder.Services.AddScoped<IBossService, BossService>();
+    //builder.Services.AddScoped<ILocationService, LocationService>();
+    //builder.Services.AddScoped<IUniqueItemService, UniqueItemService>();
+}
 
 var app = builder.Build();
-
-//testing
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

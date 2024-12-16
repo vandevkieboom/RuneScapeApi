@@ -1,41 +1,47 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using OpdrachtApiOntwikkelingDeel1.Models;
-using OpdrachtApiOntwikkelingDeel1.Services;
+using Microsoft.EntityFrameworkCore;
+using OpdrachtApiOntwikkeling.Data;
+using OpdrachtApiOntwikkeling.Models;
 
-namespace OpdrachtApiOntwikkelingDeel1.Controllers
+namespace OpdrachtApiOntwikkeling.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class BossesController : ControllerBase
     {
-        private readonly IBossService _bossService;
+        private readonly AppDbContext _context;
 
-        public BossesController(IBossService bossService)
+        public BossesController(AppDbContext context)
         {
-            _bossService = bossService;
+            _context = context;
         }
 
         [HttpPost]
         public async Task<ActionResult> AddBoss([FromBody] Boss boss)
         {
-            await _bossService.AddBoss(boss);
+            _context.Bosses.Add(boss);
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetBossById), new { id = boss.Id }, boss);
         }
         
         [HttpGet]
         public async Task<ActionResult<List<Boss>>> GetBosses()
         {
-            var bosses = await _bossService.GetBosses();
+            var bosses = await _context.Bosses.ToListAsync();
+            if (bosses is null || !bosses.Any())
+            {
+                return NotFound("No bosses found.");
+            }
             return Ok(bosses);
         }
 
         [HttpGet("{id:int}/details")]
         public async Task<ActionResult<Boss>> GetBossById(int id)
         {
-            var boss = await _bossService.GetBossById(id);
+            var boss = await _context.Bosses.FindAsync(id);
             if (boss is null)
             {
-                return NotFound();
+                return NotFound($"Boss with ID {id} not found.");
             }
             return Ok(boss);
         }
@@ -43,10 +49,10 @@ namespace OpdrachtApiOntwikkelingDeel1.Controllers
         [HttpGet("{id:int}/image")]
         public async Task<ActionResult<Boss>> GetBossImage(int id)
         {
-            var boss = await _bossService.GetBossById(id);
+            var boss = await _context.Bosses.FindAsync(id);
             if (boss is null)
             {
-                return NotFound();
+                return NotFound($"Boss with ID {id} not found.");
             }
             return Ok(boss.Image);
         }
@@ -54,10 +60,12 @@ namespace OpdrachtApiOntwikkelingDeel1.Controllers
         [HttpGet("search")]
         public async Task<ActionResult<List<Boss>>> SearchBosses([FromQuery] string name)
         {
-            var bosses = await _bossService.SearchBossesByName(name);
-            if (bosses == null || bosses.Count == 0)
+            var bosses = await _context.Bosses
+                .Where(b => b.Name.Contains(name, StringComparison.OrdinalIgnoreCase))
+                .ToListAsync();
+            if (bosses is null || !bosses.Any())
             {
-                return NotFound();
+                return NotFound($"No bosses found with name containing '{name}'.");
             }
             return Ok(bosses);
         }
@@ -65,10 +73,12 @@ namespace OpdrachtApiOntwikkelingDeel1.Controllers
         [HttpGet("search/combatLevel")]
         public async Task<ActionResult<List<Boss>>> GetBossesByCombatLevelRange([FromQuery] int minLevel, [FromQuery] int maxLevel)
         {
-            var bosses = await _bossService.GetBossesByCombatLevelRange(minLevel, maxLevel);
-            if (bosses == null || bosses.Count == 0)
+            var bosses = await _context.Bosses
+                .Where(b => b.CombatLevel >= minLevel && b.CombatLevel <= maxLevel)
+                .ToListAsync();
+            if (bosses is null || !bosses.Any())
             {
-                return NotFound();
+                return NotFound($"No bosses found in the combat level range {minLevel} - {maxLevel}.");
             }
             return Ok(bosses);
         }
@@ -78,27 +88,37 @@ namespace OpdrachtApiOntwikkelingDeel1.Controllers
         {
             if (id != boss.Id)
             {
-                return BadRequest();
+                return BadRequest("Boss ID mismatch.");
             }
-
-            var existingBoss = await _bossService.GetBossById(id);
-            if (existingBoss is null)
+            _context.Entry(boss).State = EntityState.Modified;
+            try
             {
-                return NotFound();
+                await _context.SaveChangesAsync();
             }
-            var updatedBoss = await _bossService.UpdateBoss(id, boss);
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Bosses.Any(e => e.Id == id))
+                {
+                    return NotFound($"Boss with ID {id} not found.");
+                }
+                else
+                {
+                    throw;
+                }
+            }
             return NoContent();
         }
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteBoss(int id)
         {
-            var existingBoss = await _bossService.GetBossById(id);
-            if (existingBoss is null)
+            var boss = await _context.Bosses.FindAsync(id);
+            if (boss is null)
             {
-                return NotFound();
+                return NotFound($"Boss with ID {id} not found.");
             }
-            await _bossService.DeleteBoss(id);
+            _context.Bosses.Remove(boss);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
     }

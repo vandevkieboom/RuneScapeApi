@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OpdrachtApiOntwikkelingDeel1.Models
+namespace OpdrachtApiOntwikkeling.Models
 {
     public class UniqueItem
     {

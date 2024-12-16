@@ -1,6 +1,6 @@
-﻿using OpdrachtApiOntwikkelingDeel1.Models;
+﻿using OpdrachtApiOntwikkeling.Models;
 
-namespace OpdrachtApiOntwikkelingDeel1.Services
+namespace OpdrachtApiOntwikkeling.Services
 {
     public class LocationService : ILocationService
     {
@@ -17,6 +17,7 @@ namespace OpdrachtApiOntwikkelingDeel1.Services
             new Location { Id = 9, Name = "The Scar", Description = "The home of the gnomes, located in the Tree Gnome Stronghold.", Image = "https://oldschool.runescape.wiki/images/The_Scar.png?61378", BossId = 9 },
             new Location { Id = 10, Name = "King Black Dragon Lair", Description = "A lair deep in the wilderness, home to the King Black Dragon.", Image = "https://oldschool.runescape.wiki/images/KBD_Lair_%28interior%29.png?35aa6", BossId = 10 }
         };
+
         public Task AddLocation(Location location)
         {
             _allLocations.Add(location);

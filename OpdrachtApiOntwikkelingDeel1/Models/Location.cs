@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OpdrachtApiOntwikkelingDeel1.Models
+namespace OpdrachtApiOntwikkeling.Models
 {
     public class Location
     {
@@ -16,6 +16,6 @@ namespace OpdrachtApiOntwikkelingDeel1.Models
         public string Image { get; set; } = string.Empty;
 
         public int BossId { get; set; }
-        public Boss Boss { get; set; }
+        public Boss? Boss { get; set; }
     }
 }

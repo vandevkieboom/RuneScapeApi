@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OpdrachtApiOntwikkelingDeel1.Models
+namespace OpdrachtApiOntwikkeling.Models
 {
     public class Boss
     {
@@ -20,6 +20,6 @@ namespace OpdrachtApiOntwikkelingDeel1.Models
         public string Image { get; set; } = string.Empty;
 
         public int UniqueItemId { get; set; }
-        public UniqueItem UniqueItem { get; set; }
+        public UniqueItem? UniqueItem { get; set; }
     }
 }
