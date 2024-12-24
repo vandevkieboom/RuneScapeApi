@@ -16,38 +16,38 @@ namespace OpdrachtApiOntwikkeling.Migrations
                 name: "UniqueItems",
                 columns: table => new
                 {
-                    unique_item_id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    price = table.Column<int>(type: "int", nullable: true, defaultValue: 1),
-                    high_alch = table.Column<int>(type: "int", nullable: true, defaultValue: 1),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "https://i.imgur.com/Ac1Eonb.jpeg")
+                    price = table.Column<int>(type: "int", nullable: true),
+                    high_alch = table.Column<int>(type: "int", nullable: true),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UniqueItems", x => x.unique_item_id);
+                    table.PrimaryKey("PK_UniqueItems", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Bosses",
                 columns: table => new
                 {
-                    boss_id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    hitpoints = table.Column<int>(type: "int", nullable: true, defaultValue: 1),
-                    combat_level = table.Column<int>(type: "int", nullable: true, defaultValue: 1),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "https://i.imgur.com/drRS2Tf.jpeg"),
+                    hitpoints = table.Column<int>(type: "int", nullable: true),
+                    combat_level = table.Column<int>(type: "int", nullable: true),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     unique_item_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Bosses", x => x.boss_id);
+                    table.PrimaryKey("PK_Bosses", x => x.id);
                     table.ForeignKey(
                         name: "FK_Bosses_UniqueItems_unique_item_id",
                         column: x => x.unique_item_id,
                         principalTable: "UniqueItems",
-                        principalColumn: "unique_item_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.SetNull);
                 });
 
@@ -55,27 +55,27 @@ namespace OpdrachtApiOntwikkeling.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    location_id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    image = table.Column<string>(type: "nvarchar(max)", nullable: true, defaultValue: "https://i.imgur.com/U06pWSy.jpeg"),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    image = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     boss_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Locations", x => x.location_id);
+                    table.PrimaryKey("PK_Locations", x => x.id);
                     table.ForeignKey(
                         name: "FK_Locations_Bosses_boss_id",
                         column: x => x.boss_id,
                         principalTable: "Bosses",
-                        principalColumn: "boss_id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.InsertData(
                 table: "UniqueItems",
-                columns: new[] { "unique_item_id", "high_alch", "image", "name", "price" },
+                columns: new[] { "id", "high_alch", "image", "name", "price" },
                 values: new object[,]
                 {
                     { 1, 66000, "https://oldschool.runescape.wiki/images/Tanzanite_fang_detail.png?859ba", "Tanzanite fang", 5784502 },
@@ -92,7 +92,7 @@ namespace OpdrachtApiOntwikkeling.Migrations
 
             migrationBuilder.InsertData(
                 table: "Bosses",
-                columns: new[] { "boss_id", "combat_level", "hitpoints", "image", "name", "unique_item_id" },
+                columns: new[] { "id", "combat_level", "hitpoints", "image", "name", "unique_item_id" },
                 values: new object[,]
                 {
                     { 1, 725, 500, "https://oldschool.runescape.wiki/images/Zulrah_%28serpentine%29.png?29a54", "Zulrah", 1 },
@@ -109,7 +109,7 @@ namespace OpdrachtApiOntwikkeling.Migrations
 
             migrationBuilder.InsertData(
                 table: "Locations",
-                columns: new[] { "location_id", "boss_id", "description", "image", "name" },
+                columns: new[] { "id", "boss_id", "description", "image", "name" },
                 values: new object[,]
                 {
                     { 1, 1, "A remote island known for its unique teleportation methods and fishing spots.", "https://oldschool.runescape.wiki/images/Zul-Andra.png?bc8fb", "Zul-Andra" },

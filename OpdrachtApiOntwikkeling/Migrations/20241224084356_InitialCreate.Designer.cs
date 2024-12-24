@@ -11,7 +11,7 @@ using OpdrachtApiOntwikkeling.Data;
 namespace OpdrachtApiOntwikkeling.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241217170426_InitialCreate")]
+    [Migration("20241224084356_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,26 +29,21 @@ namespace OpdrachtApiOntwikkeling.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("boss_id");
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("CombatLevel")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1)
                         .HasColumnName("combat_level");
 
                     b.Property<int?>("Hitpoints")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1)
                         .HasColumnName("hitpoints");
 
                     b.Property<string>("Image")
-                        .ValueGeneratedOnAdd()
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("https://i.imgur.com/drRS2Tf.jpeg")
                         .HasColumnName("image");
 
                     b.Property<string>("Name")
@@ -167,7 +162,7 @@ namespace OpdrachtApiOntwikkeling.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("location_id");
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
@@ -176,13 +171,13 @@ namespace OpdrachtApiOntwikkeling.Migrations
                         .HasColumnName("boss_id");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<string>("Image")
-                        .ValueGeneratedOnAdd()
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("https://i.imgur.com/U06pWSy.jpeg")
                         .HasColumnName("image");
 
                     b.Property<string>("Name")
@@ -287,20 +282,17 @@ namespace OpdrachtApiOntwikkeling.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("unique_item_id");
+                        .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("HighAlch")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1)
                         .HasColumnName("high_alch");
 
                     b.Property<string>("Image")
-                        .ValueGeneratedOnAdd()
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("https://i.imgur.com/Ac1Eonb.jpeg")
                         .HasColumnName("image");
 
                     b.Property<string>("Name")
@@ -310,9 +302,7 @@ namespace OpdrachtApiOntwikkeling.Migrations
                         .HasColumnName("name");
 
                     b.Property<int?>("Price")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasDefaultValue(1)
                         .HasColumnName("price");
 
                     b.HasKey("Id");

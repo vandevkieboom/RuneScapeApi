@@ -7,31 +7,24 @@ namespace OpdrachtApiOntwikkeling.Data
 {
     public class UniqueItemConfiguration : IEntityTypeConfiguration<UniqueItem>
     {
+        //ik weet dat het instellen van primaire sleutel en kolomnamen niet nodig is, maar ik doe het toch voor de duidelijkheid
         public void Configure(EntityTypeBuilder<UniqueItem> builder)
         {
             builder.ToTable("UniqueItems");
             builder.HasKey(l => l.Id);
-            builder.Property(l => l.Id).HasColumnName("unique_item_id");
+            builder.Property(l => l.Id).HasColumnName("id");
 
             builder.Property(l => l.Name)
-                .HasColumnName("name")
-                .IsRequired()
-                .HasMaxLength(30);
+                .HasColumnName("name");
 
             builder.Property(l => l.Price)
-                .HasColumnName("price")
-                .IsRequired(false)
-                .HasDefaultValue(1);
+                .HasColumnName("price");
 
             builder.Property(l => l.HighAlch)
-                .HasColumnName("high_alch")
-                .IsRequired(false)
-                .HasDefaultValue(1);
+                .HasColumnName("high_alch");
 
             builder.Property(l => l.Image)
-                .HasColumnName("image")
-                .IsRequired(false)
-                .HasDefaultValue("https://i.imgur.com/Ac1Eonb.jpeg");
+                .HasColumnName("image");
         }
     }
 }

@@ -7,35 +7,27 @@ namespace OpdrachtApiOntwikkeling.Data
 {
     public class BossConfiguration : IEntityTypeConfiguration<Boss>
     {
+        //ik weet dat het instellen van primaire sleutel en kolomnamen niet nodig is, maar ik doe het toch voor de duidelijkheid
         public void Configure(EntityTypeBuilder<Boss> builder)
         {
             builder.ToTable("Bosses");
             builder.HasKey(c => c.Id);
-            builder.Property(c => c.Id).HasColumnName("boss_id");
+            builder.Property(c => c.Id).HasColumnName("id");
 
             builder.Property(c => c.Name)
-                .HasColumnName("name")
-                .IsRequired()
-                .HasMaxLength(50);
+                .HasColumnName("name");
 
             builder.Property(c => c.Hitpoints)
-                .HasColumnName("hitpoints")
-                .IsRequired(false)
-                .HasDefaultValue(1);
+                .HasColumnName("hitpoints");
 
             builder.Property(c => c.CombatLevel)
-                .HasColumnName("combat_level")
-                .IsRequired(false)
-                .HasDefaultValue(1);
+                .HasColumnName("combat_level");
 
             builder.Property(c => c.Image)
-                .HasColumnName("image")
-                .IsRequired(false)
-                .HasDefaultValue("https://i.imgur.com/drRS2Tf.jpeg");
+                .HasColumnName("image");
 
             builder.Property(c => c.UniqueItemId)
-                .HasColumnName("unique_item_id")
-                .IsRequired(false);
+                .HasColumnName("unique_item_id");
 
             builder.HasOne(b => b.UniqueItem)
                 .WithOne()
